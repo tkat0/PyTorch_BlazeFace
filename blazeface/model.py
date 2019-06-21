@@ -55,10 +55,21 @@ class BlazeBlock(nn.Module):
         return self.act(h + x)
 
 
-class BlazeFace(nn.Module):
-    """
+def initialize(module):
+    # original implementation is unknown
+    if isinstance(module, nn.Conv2d):
+        nn.init.kaiming_normal_(module.weight.data)
+        nn.init.constant_(module.bias.data, 0)
+    elif isinstance(module, nn.BatchNorm2d):
+        nn.init.constant_(module.weight.data, 1)
+        nn.init.constant_(module.bias.data, 0)
 
-    table4
+
+class BlazeFace(nn.Module):
+    """Constructs a BlazeFace model
+
+    the original paper
+    https://sites.google.com/view/perception-cv4arvr/blazeface
     """
 
     def __init__(self):
@@ -67,7 +78,7 @@ class BlazeFace(nn.Module):
         self.features = nn.Sequential(
             nn.Conv2d(3, 24, kernel_size=3, stride=2, padding=1, bias=True),
             nn.BatchNorm2d(24),
-            nn.ReLU6(inplace=True),
+            nn.ReLU(inplace=True),
             BlazeBlock(24, 24),
             BlazeBlock(24, 24),
             BlazeBlock(24, 48, stride=2),
@@ -81,7 +92,7 @@ class BlazeFace(nn.Module):
             BlazeBlock(96, 24, 96),
         )
 
-        # weight initialization
+        self.apply(initialize)
 
     def forward(self, x):
         h = self.features(x)
