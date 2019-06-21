@@ -12,9 +12,9 @@ class BlazeBlock(nn.Module):
         self.use_pooling = self.stride != 1
 
         if self.use_double_block:
-            self.channel_pad = (oup2 - inp) // 2
+            self.channel_pad = oup2 - inp
         else:
-            self.channel_pad = (oup1 - inp) // 2
+            self.channel_pad = oup1 - inp
 
         padding = (kernel_size - 1) // 2
 
@@ -51,7 +51,7 @@ class BlazeBlock(nn.Module):
         if self.use_pooling:
             x = self.mp(x)
         if self.channel_pad > 0:
-            x = F.pad(x, (0, 0, 0, 0, self.channel_pad, self.channel_pad), 'constant', 0)
+            x = F.pad(x, (0, 0, 0, 0, 0, self.channel_pad), 'constant', 0)
         return self.act(h + x)
 
 
