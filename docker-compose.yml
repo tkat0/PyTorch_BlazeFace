@@ -1,0 +1,13 @@
+version: "2.3"
+services:
+  cpu: &cpu
+    build:
+      context: .
+      dockerfile: docker/Dockerfile.cpu
+    tty: true
+    working_dir: /work
+    volumes:
+      - $PWD:/work
+  test:
+    <<: *cpu
+    command: pytest tests -vv --basetemp tests_results

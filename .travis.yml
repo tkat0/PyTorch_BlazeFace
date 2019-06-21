@@ -1,0 +1,16 @@
+language: python
+
+python:
+  - 3.6
+
+cache:
+  - pip
+
+install:
+  - pip install -qU pip setuptools
+  - pip install -q pytest
+  - pip install -q https://download.pytorch.org/whl/cpu/torch-1.1.0-cp36-cp36m-linux_x86_64.whl
+  - pip install -q -e .
+
+script:
+  - pytest -vv tests
