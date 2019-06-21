@@ -16,5 +16,6 @@ def test_export_onnx(tmpdir):
 
     x = torch.randn(1, 3, 128, 128)
     model = BlazeFace()
-    torch.onnx.export(model, x, p, verbose=True, input_names='input',
+    torch.onnx.export(model, x, p, verbose=True,
+                      input_names=['input'],
                       output_names=['output'])
