@@ -15,7 +15,8 @@ import torch
 from blazeface import BlazeFace
 
 x = torch.randn(1, 3, 128, 128)
-h = BlazeFace(x)
+model = BlazeFace()
+h = model(x)
 ```
 
 ## Paper
